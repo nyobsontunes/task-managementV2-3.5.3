@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class TestController {
 
-    @GetMapping(value = "/")
+    @GetMapping(value = "/index")
     public String getSbAdminIndex(Model model){
         model.addAttribute("bonjour","BONJOUR LE MONDE");
         return "index" ;
