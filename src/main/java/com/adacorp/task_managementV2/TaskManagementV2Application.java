@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
-@ComponentScan("com.adacorp.task_managementV2.controller")
+@ComponentScan(value = "com.adacorp.task_managementV2")
 @EnableScheduling
 public class TaskManagementV2Application extends SpringBootServletInitializer {
 
