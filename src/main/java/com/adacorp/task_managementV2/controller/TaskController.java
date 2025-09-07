@@ -31,4 +31,13 @@ public class TaskController {
         return "views/task-list";
     }
 
+    @GetMapping(value = "/home-add-task")
+    public String addTask(Model model, Principal p, HttpServletRequest request){
+        model.addAttribute("dataTable", "page.titre.taskList") ;
+        model.addAttribute("titreDataTable", "Gestion Ajout & Mise à Jour des Taches") ;
+        model.addAttribute("Titre", "page.task.title.label.add") ;
+        model.addAttribute("states", stateService.findAll()) ;
+        return "views/task-add";
+    }
+
 }

@@ -17,7 +17,7 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     int countByState_Code (String code);
     long count();
-    int countAllByState_Code(String code); 
+    int countAllByState_Code(String stateCode);
     long countByState(State state);
     
     List<Task> findALlByState_CodeOrderByDateCreationDesc(String code) ;
