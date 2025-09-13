@@ -1,5 +1,6 @@
 package com.adacorp.task_managementV2.controller;
 
+import com.adacorp.task_managementV2.exception.EntityNotFoundException;
 import com.adacorp.task_managementV2.model.Role;
 import com.adacorp.task_managementV2.model.Utilisateur;
 import com.adacorp.task_managementV2.services.Impl.UtilisateurServiceImpl;
@@ -13,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
@@ -189,6 +191,42 @@ public class UserController {
             return page ;
         }
 
+    }
+
+    @GetMapping(value = "/home-edit-user")
+    public String updateUserGet(@RequestParam("id") Long id, Model model){
+
+        List<Role> roleList = this.roleService.findAll() ;
+        Utilisateur utilisateur = this.utilisateurService.findOne(id).orElseThrow(() -> new EntityNotFoundException("Objet entité non Trouvé en Base...")) ;
+
+
+        // ----------------------------------------------------------------------------
+        model.addAttribute(SUCCESS,"Successful Redirection add users page") ;
+        model.addAttribute("utilisateur", utilisateur);
+        model.addAttribute(ROLES,roleList);
+        setAttributCommun (model);
+        // ----------------------------------------------------------------------------
+
+        return PAGE_USER_ADD ;
+    }
+
+    @GetMapping(value = "/home-disable-OR-enable-user")
+    public String deleteUser(@RequestParam("id") Long id, RedirectAttributes redirectAttributes ) {
+        Optional<Utilisateur> user = this.utilisateurService.findOne(id);
+
+        if (user.isPresent()) {
+            // user.get().setAccountNonLocked( !user.get().isAccountNonLocked() ) ;
+            redirectAttributes.addFlashAttribute("successOperation", "Opération effectuée avec Succès...") ;
+        } else  {
+            redirectAttributes.addFlashAttribute("errorOperation", "Echec de l'Opération") ;
+        }
+
+        // Interface Fonctionnelle : Lambda Expression
+        user.ifPresent(utilisateur -> utilisateur.setAccountNonLocked(!utilisateur.isAccountNonLocked()));
+
+        utilisateurService.save(user.get()) ;
+        // utilisateurService.delete(user.orElseThrow(() -> new RuntimeException(MSG_NO_SUCH_USER_FOUND)));
+        return "redirect:/home-list-users" ;
     }
 
     public void setAttributCommun (Model model){
