@@ -45,13 +45,13 @@ public class AccountCleanupBatch implements CommandLineRunner {
         Date date2IlYA90Jours = cal.getTime();
 
         int updated2 = utilisateurService.desActivateInactiveAccountsWithLimitDate(date2IlYA90Jours);
-        LOGGER.info("Batch SQL 1D : terminé : " + updated2 + " comptes désactivés.");
+        LOGGER.info("Batch SQL 2A : terminé : {} comptes désactivés.", updated2);
 
         this.utilisateurService.desActivateInactiveAccounts(properties.getInactiveDays());
         LOGGER.info("Batch SQL 2D : terminé.");
 
         int updated3 = utilisateurService.reActivateInactiveAccountsWithLimitDate(date2IlYA90Jours);
-        LOGGER.info("Batch SQL 1A : terminé : " + updated3 + " comptes désactivés.");
+        LOGGER.info("Batch SQL 1A : terminé : {} comptes désactivés.", updated3);
 
         this.utilisateurService.reActivateInactiveAccounts(properties.getInactiveDays());
         LOGGER.info("Batch SQL 2A : terminé.");
