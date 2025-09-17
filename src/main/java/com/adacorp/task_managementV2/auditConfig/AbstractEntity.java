@@ -54,4 +54,9 @@ public class AbstractEntity<U> implements Serializable
         this.dateCreation =  new Date() ;
         this.dateModification =  new Date() ;
     }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.dateModification = new Date();
+    }
 }

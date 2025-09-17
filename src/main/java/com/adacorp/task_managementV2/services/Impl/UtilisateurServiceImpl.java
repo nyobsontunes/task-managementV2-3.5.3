@@ -6,6 +6,7 @@ import com.adacorp.task_managementV2.services.UtilisateurService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -72,5 +73,41 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     @Override
     public boolean existsByEmail(String email) {
         return this.utilisateurRepository.existsByEmail(email);
+    }
+
+    /**
+     * FDE_77421 : Service du Batch de Désactivation des Comptes
+     * param limitDays
+     */
+    @Override
+    public void desActivateInactiveAccounts(int limitDays) {
+        utilisateurRepository.desActivateInactiveAccounts(limitDays);
+    }
+
+    /**
+     * FDE_77421 : Service du Batch de Désactivation des Comptes
+     * param limitDate
+     */
+    @Override
+    public int desActivateInactiveAccountsWithLimitDate(Date limitDate) {
+        return utilisateurRepository.desActivateInactiveAccountsWithLimitDate(limitDate);
+    }
+
+    /**
+     * FDE_77421 : Service du Batch de Réactivation des Comptes
+     * param limitDays
+     */
+    @Override
+    public void reActivateInactiveAccounts(int limitDays) {
+        utilisateurRepository.reActivateInactiveAccounts(limitDays);
+    }
+
+    /**
+     * FDE_77421 : Service du Batch de Réactivation des Comptes
+     * param limitDate
+     */
+    @Override
+    public int reActivateInactiveAccountsWithLimitDate(Date limitDate) {
+        return utilisateurRepository.desActivateInactiveAccountsWithLimitDate(limitDate);
     }
 }

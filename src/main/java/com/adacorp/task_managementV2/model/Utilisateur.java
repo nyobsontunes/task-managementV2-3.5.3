@@ -54,4 +54,15 @@ public class Utilisateur extends AbstractEntity implements Serializable {
     @OneToMany(mappedBy = "utilisateur")
     private List<UtilisateurTask> utilisateurTaskList = new ArrayList<>();
 
+    /**
+     * FDE_77421 : Date de Dernière Connexion du compte utilisateur
+     * param dateDerniereConnexion
+     * the dateDerniereConnexion to set
+     */
+    @Getter
+    @Setter
+    @Column(name = "date_derniere_connexion", unique = false, updatable = true, nullable = true)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateDerniereConnexion;
+
 }

@@ -50,6 +50,7 @@
                                         <th>Email</th>
                                         <th>Enabled</th>
                                         <th>Role</th>
+                                        <th>Created Date</th>
                                         <th>Action(s)</th>
                                     </tr>
                                 </thead>
@@ -61,17 +62,19 @@
                                         <th>Email</th>
                                         <th>Enabled</th>
                                         <th>Role</th>
+                                        <th>Created Date</th>
                                         <th>Action(s)</th>
                                     </tr>
                                 </tfoot>
                                 <tbody>
-                                    <tr th:each="user : ${users}" >
+                                    <tr th:each="user : ${users}" style="text-transform: uppercase;">
                                         <td th:text="${user.lastName}"></td>
                                         <td th:text="${user.firstName}"></td>
                                         <td th:text="${user.telephone}"  width="10%"></td>
                                         <td th:text="${user.email}">
                                         <td th:text="${user.isAccountNonLocked}"></td>
                                         <td th:text="${user.role?.code}"></td>
+                                        <td th:text="${#dates.format(user.dateCreation, 'dd-MM-yyyy')}"></td>
                                         <td class="text-align-center">
                                             <div class="btn-group align-middle" role="group" aria-label="Basic example">
                                                 <!--
