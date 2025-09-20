@@ -41,6 +41,7 @@ public interface UtilisateurRepository extends JpaRepository<Utilisateur, Long> 
      * @param id les identifiants des utilisateurs à supprimer
      */
     @Modifying
+    @Transactional
     @Query("DELETE FROM Utilisateur u WHERE u.id IN (?1)")
     public void delete(Long id);
 
@@ -49,6 +50,7 @@ public interface UtilisateurRepository extends JpaRepository<Utilisateur, Long> 
      * @param ids les identifiants des utilisateurs à ne plus être authentifié
      */
     @Modifying
+    @Transactional
     @Query("UPDATE Utilisateur u SET u.isAccountNonLocked = true WHERE u.id IN (?1)")
     public void activerCompteUtilisateur(long[] ids);
 
@@ -57,16 +59,9 @@ public interface UtilisateurRepository extends JpaRepository<Utilisateur, Long> 
      * @param ids les identifiants des utilisateurs à désactiver
      */
     @Modifying
-    @Query("UPDATE Utilisateur u SET u.isAccountNonLocked = true WHERE u.id IN (?1)")
-    public void activer(long[] ids);
-
-    /**
-     * Force à "inactif" tous les utilisateurs identifiés
-     * @param ids les identifiants des utilisateurs à désactiver
-     */
-    @Modifying
+    @Transactional
     @Query("UPDATE Utilisateur u SET u.isAccountNonLocked = false WHERE u.id IN (?1)")
-    public void desActiver(long[] ids);
+    public void desActiverCompteUtilisateur(long[] ids);
 
     /**
      * FDE_77421 : DAO du Batch de Désactivation des Comptes
