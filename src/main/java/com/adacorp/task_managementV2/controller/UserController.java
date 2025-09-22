@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 // import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,14 +42,14 @@ public class UserController {
     private static  final String USER_ADMIN_ACCOUNT = "admin@admin.com" ;
     private static  final String MSG_CONFIRMATION_NOT_SAME_PWD = "Confirmation password is not the same as User password" ;
     private static  final String MSG_NO_SUCH_USER_FOUND = "No such user found" ;
-    private static  final String FIRST_PWD = "1234566789" ;
-    // private final PasswordEncoder passwordEncoder;
+    private static  final String FIRST_PWD = "123456789" ;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserController(UtilisateurService utilisateurService, RoleService roleService/*, PasswordEncoder passwordEncoder*/ ) {
+    public UserController(UtilisateurService utilisateurService, RoleService roleService, PasswordEncoder passwordEncoder ) {
         this.utilisateurService = utilisateurService;
         this.roleService = roleService;
-        // this.passwordEncoder = passwordEncoder;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping(value = "/create-user-test")
@@ -64,8 +65,8 @@ public class UserController {
             utilisateur.setTelephone("696237913");
             utilisateur.setEmail(USER_ADMIN_ACCOUNT);
             utilisateur.setSexe('M');
-            // utilisateur.setPassword( this.passwordEncoder.encode(FIRST_PWD) );
-            utilisateur.setPassword( "123456789" ) ;
+            utilisateur.setPassword( this.passwordEncoder.encode(FIRST_PWD) );
+            // utilisateur.setPassword( "123456789" ) ;
             utilisateur.setRole(role.orElseThrow(() -> new RuntimeException("No role found")));
             this.utilisateurService.save(utilisateur);
         } else {
@@ -76,8 +77,8 @@ public class UserController {
             utilisateur.setTelephone("696237913");
             utilisateur.setEmail(USER_ADMIN_ACCOUNT);
             utilisateur.setSexe('M');
-            // utilisateur.setPassword( this.passwordEncoder.encode(FIRST_PWD) );
-            utilisateur.setPassword( "123456789" ) ;
+            utilisateur.setPassword( this.passwordEncoder.encode(FIRST_PWD) );
+            // utilisateur.setPassword( "123456789" ) ;
             utilisateur.setRole(role.orElseThrow(() -> new RuntimeException("No role found")));
             this.utilisateurService.save(utilisateur);
 

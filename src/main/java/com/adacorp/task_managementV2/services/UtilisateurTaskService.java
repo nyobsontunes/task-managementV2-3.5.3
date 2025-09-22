@@ -27,4 +27,6 @@ public interface UtilisateurTaskService {
 
     List<UtilisateurTask> findByUtilisateur (Utilisateur utilisateur);
 
+    List<UtilisateurTask>  findByUtilisateur_EmailAndTask_State_CodeOrderByAssignmentDateDesc(String email, String code) ;
+
 }

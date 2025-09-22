@@ -63,4 +63,8 @@ public class UtilisateurTaskServiceImpl implements UtilisateurTaskService {
         // return List.of();
         return this.utilisateurTaskRepository.findAll();
     }
+    @Override
+    public List<UtilisateurTask> findByUtilisateur_EmailAndTask_State_CodeOrderByAssignmentDateDesc(String email, String code) {
+        return utilisateurTaskRepository.findByUtilisateur_EmailAndTask_State_CodeOrderByAssignmentDateDesc(email, code);
+    }
 }

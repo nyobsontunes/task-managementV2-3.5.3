@@ -16,4 +16,5 @@ public interface UtilisateurTaskRepository extends JpaRepository<UtilisateurTask
     List<UtilisateurTask> findAllByUtilisateur(Utilisateur utilisateur) ;
     List<UtilisateurTask> findAllByUtilisateur_Id(Long id) ;
     List<UtilisateurTask> findAllByUtilisateurOrderByTaskIdDesc (Utilisateur utilisateur) ;
+    List<UtilisateurTask> findByUtilisateur_EmailAndTask_State_CodeOrderByAssignmentDateDesc(String email, String code) ;
 }
