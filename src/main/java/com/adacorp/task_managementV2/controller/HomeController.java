@@ -43,8 +43,10 @@ public class HomeController {
     @GetMapping(value = "/")
     public String indexApp(Model model){
         model.addAttribute(SUCCESS,"Task Management Application !!!") ;
-        // return INDEX_LOGIN ;
-        return "redirect:/home-list-users";
+        // **************** Ceci est hors Spring-security ***********************
+        // return "redirect:/home-list-users";
+        // **************** Ceci est hors Spring-security ***********************
+        return INDEX_LOGIN ;
     }
 
     @GetMapping("/dashboard")

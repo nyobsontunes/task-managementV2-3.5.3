@@ -65,7 +65,7 @@ public class UserController {
             utilisateur.setEmail(USER_ADMIN_ACCOUNT);
             utilisateur.setSexe('M');
             // utilisateur.setPassword( this.passwordEncoder.encode(FIRST_PWD) );
-            utilisateur.setPassword( "1234566789" ) ;
+            utilisateur.setPassword( "123456789" ) ;
             utilisateur.setRole(role.orElseThrow(() -> new RuntimeException("No role found")));
             this.utilisateurService.save(utilisateur);
         } else {
@@ -77,7 +77,7 @@ public class UserController {
             utilisateur.setEmail(USER_ADMIN_ACCOUNT);
             utilisateur.setSexe('M');
             // utilisateur.setPassword( this.passwordEncoder.encode(FIRST_PWD) );
-            utilisateur.setPassword( "1234566789" ) ;
+            utilisateur.setPassword( "123456789" ) ;
             utilisateur.setRole(role.orElseThrow(() -> new RuntimeException("No role found")));
             this.utilisateurService.save(utilisateur);
 
