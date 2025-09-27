@@ -67,14 +67,18 @@
                                     </tr>
                                 </tfoot>
                                 <tbody>
-                                    <tr th:each="user : ${users}" style="text-transform: uppercase;">
-                                        <td th:text="${user.lastName}"></td>
-                                        <td th:text="${user.firstName}"></td>
+                                    <!-- Si Liste Vide, Aucun résultat dans le tableau -->
+                                    <tr th:if="${#lists.isEmpty(users)}"><td colspan="8" th:utext="#{commun.aucunresultat}"></td></tr>
+                                    <!-- Si Liste chargée, on affiche le résultat dans le tableau -->
+                                    <tr th:if="${not #lists.isEmpty(users)}" th:each="user : ${users}" style="text-transform: uppercase;">
+                                        <td><th:block th:if="${!#strings.isEmpty(user.lastName)}" th:text="${user.lastName}"></th:block></td>
+                                        <td th:text="${not #strings.isEmpty(user.firstName) ? user.firstName : ''}"></td>
                                         <td th:text="${user.telephone}"  width="10%"></td>
                                         <td th:text="${user.email}">
                                         <td th:text="${user.isAccountNonLocked}"></td>
                                         <td th:text="${user.role?.code}"></td>
-                                        <td th:text="${#dates.format(user.dateCreation, 'dd-MM-yyyy')}"></td>
+                                        <!-- <td th:text="${#dates.format(user.dateCreation, 'dd-MM-yyyy')}"></td> -->
+                                        <td th:text="${user.dateCreation != null} ? ${#dates.format(user.dateCreation, 'dd/MM/yyyy')} : #{commun.label.table.vide}"></td>
                                         <td class="text-align-center">
                                             <div class="btn-group align-middle" role="group" aria-label="Basic example">
                                                 <!--

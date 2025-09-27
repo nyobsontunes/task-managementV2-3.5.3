@@ -19,6 +19,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -89,7 +92,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/home-list-users")
-    public String listUsers(Model model){
+    public String listUsers(Model model, Principal p){
 
         List<Utilisateur> listUsers;
         listUsers = this.utilisateurService.findAll() ;
@@ -97,21 +100,48 @@ public class UserController {
         model.addAttribute(USERS, listUsers);
         model.addAttribute(SUCCESS,"Successful Redirection users page") ;
         model.addAttribute("Titre", "commun.label.usersManagement") ;
+        model.addAttribute("userNameSession", p.getName()) ;
+        model.addAttribute("userSession", utilisateurService.findByEmail(p.getName()).get()) ;
         // ----------------------------------------------------------------------------
         return PAGE_USER_LIST ;
     }
 
     @GetMapping(value = "/home-add-user")
-    public String addUserGet(Model model, Principal p, HttpServletRequest request){
+    public String addUserGet(Model model, Principal p, HttpServletRequest request) throws ParseException {
 
         List<Role> roleList = this.roleService.findAll() ;
         Utilisateur utilisateur = new Utilisateur() ;
         utilisateur.setAccountNonLocked(true);
 
 
+
+        // NOTES :--> Différents type de Formatage de Date Java HTML thymeleaf
+        Date dateDerniereConnexion = utilisateur.getDateDerniereConnexion() ;
+        // Outils de Formatage de la Date en format Database
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+        String dateHeureConnexionString = sdf.format(dateDerniereConnexion != null ? dateDerniereConnexion : new Date());
+        Date dateHeureConnexionDateDate = sdf.parse(dateHeureConnexionString) ;
+
+        /*
+            Explanation of Pattern:
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+                    yyyy → 4-digit year
+                    MM → 2-digit month
+                    dd → 2-digit day
+                    HH → 2-digit hour in 24-hour format (use hh for 12-hour)
+                    mm → 2-digit minute
+                    ss → 2-digit seconds
+                    SSS → 3-digit milliseconds (not mmm)
+        */
+        utilisateur.setDateDerniereConnexion(dateHeureConnexionDateDate);
+        // NOTES :--> Différents type de Formatage de Date Java HTML thymeleaf
+
         // ----------------------------------------------------------------------------
         model.addAttribute(SUCCESS,"Successful Redirection add users page") ;
         model.addAttribute("utilisateur", utilisateur);
+        model.addAttribute("dateHeureConnexionString", dateHeureConnexionString);
+        model.addAttribute("dateHeureConnexionDateEntity", utilisateur.getDateDerniereConnexion());
+        model.addAttribute("dateDerniereConnexionDateModel", dateHeureConnexionDateDate);
         setAttributCommun (model);
         // ----------------------------------------------------------------------------
 
@@ -197,15 +227,35 @@ public class UserController {
     }
 
     @GetMapping(value = "/home-edit-user")
-    public String updateUserGet(@RequestParam("id") Long id, Model model){
+    public String updateUserGet(@RequestParam("id") Long id, Model model) throws ParseException {
 
         List<Role> roleList = this.roleService.findAll() ;
         Utilisateur utilisateur = this.utilisateurService.findOne(id).orElseThrow(() -> new EntityNotFoundException("Objet entité non Trouvé en Base...")) ;
 
+        Date dateDerniereConnexion = utilisateur.getDateDerniereConnexion() ;
+        // Outils de Formatage de la Date en format Database
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+        String dateHeureConnexionString = sdf.format(dateDerniereConnexion != null ? dateDerniereConnexion : new Date());
+        Date dateHeureConnexionDateDate = sdf.parse(dateHeureConnexionString) ;
+
+        /*
+            Explanation of Pattern:
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+                    yyyy → 4-digit year
+                    MM → 2-digit month
+                    dd → 2-digit day
+                    HH → 2-digit hour in 24-hour format (use hh for 12-hour)
+                    mm → 2-digit minute
+                    ss → 2-digit seconds
+                    SSS → 3-digit milliseconds (not mmm)
+        */
 
         // ----------------------------------------------------------------------------
         model.addAttribute(SUCCESS,"Successful Redirection add users page") ;
         model.addAttribute("utilisateur", utilisateur);
+        model.addAttribute("dateHeureConnexionString", dateHeureConnexionString);
+        model.addAttribute("dateHeureConnexionDateEntity", utilisateur.getDateDerniereConnexion());
+        model.addAttribute("dateDerniereConnexionDateModel", dateHeureConnexionDateDate);
         model.addAttribute(ROLES,roleList);
         setAttributCommun (model);
         // ----------------------------------------------------------------------------

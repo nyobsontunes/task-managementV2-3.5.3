@@ -36,7 +36,11 @@
                                         <form role="form" th:action="@{/home-add-user}" th:object="${utilisateur}"  method="post">
 
                                             <input type="hidden" th:field="*{id}" >
-                                            <input type="hidden" th:field="*{dateDerniereConnexion}" >
+                                            <!-- NOTES : Différents type de Formatage de Date Java HTML thymeleaf -->
+                                            <input type="hidden" th:id="'dateHeureConnexionDateEntity'" th:name="'dateHeureConnexionDateEntity'" th:value="${utilisateur.dateDerniereConnexion}" >
+                                            <input type="hidden" th:id="'dateDerniereConnexionDateModel'" th:name="'dateDerniereConnexionDateModel'" th:value="${dateHeureConnexionDate}" >
+                                            <input type="hidden" th:id="'dateDerniereConnexionString'" th:name="'dateDerniereConnexionString'" th:value="${dateHeureConnexionString}" >
+                                            <!-- NOTES : Différents type de Formatage de Date Java HTML thymeleaf -->
 
                                             <div class="row mb-3">
                                                 <div class="col-md-6">
@@ -110,18 +114,18 @@
                                                 <div class="form-group">
                                                     <label class="radio-inline">
                                                         <input class="custom-radio" type="radio" th:field="*{accountNonLocked}" th:value="true" th:checked="${utilisateur.isAccountNonLocked()}">
-                                                        <label th:if="${utilisateur.isAccountNonLocked() == true}" th:text="${'Enabled'}"> </label>
+                                                        <label th:if="${utilisateur.isAccountNonLocked() == true || utilisateur.isAccountNonLocked() == false}" th:text="${'Enabled'}"> </label>
                                                     </label>&nbsp;&nbsp;&nbsp;&nbsp;
                                                     <label class="radio-inline">
-                                                        <input class="custom-radio" type="radio" th:field="*{accountNonLocked}" th:value="false">
-                                                        <label  th:if="${!utilisateur.isAccountNonLocked() == false}" th:text="${'Disabled'}"></label>
+                                                        <input class="custom-radio" type="radio" th:field="*{accountNonLocked}" th:value="false" th:checked="${!utilisateur.isAccountNonLocked()}">
+                                                        <label  th:if="${!utilisateur.isAccountNonLocked() == false || !utilisateur.isAccountNonLocked() == true}" th:text="${'Disabled'}"></label>
                                                     </label>
 
                                                 </div>
                                             </div>
 
                                             <div class="mt-4 mb-0">
-                                                <div class="d-grid"><button type="submit" class="btn btn-primary btn-block" th:title="#{${LabelSave}}" th:text="#{${LabelSave}}"></button></div>
+                                                <div class="d-grid"><button type="submit" class="btn btn-primary btn-block" th:title="#{${LabelSave}}" th:utext="#{${LabelSave}}"></button></div>
                                             </div>
                                         </form>
 
