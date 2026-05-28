@@ -3,13 +3,14 @@ package com.adacorp.task_managementV2.repository;
 import com.adacorp.task_managementV2.model.Habilitation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface HabilitationRepository extends JpaRepository<Habilitation, Long> {
+public interface HabilitationRepository extends JpaRepository<Habilitation, Long>, QuerydslPredicateExecutor<Habilitation> {
     List<Habilitation> findAllByCode(String code) ;
 
     @Query(nativeQuery = true , value = "select * FROM habilitation h WHERE h.code = :code ORDER BY h.creation_date DESC")

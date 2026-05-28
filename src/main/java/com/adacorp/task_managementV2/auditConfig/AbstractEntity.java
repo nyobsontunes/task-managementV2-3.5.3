@@ -43,6 +43,7 @@ public class AbstractEntity<U> implements Serializable
     @Column(name = "creationDate", nullable = false, updatable = false)
     //@JsonIgnore // pas besoin de cet attribut lorsque j'invoque mon API.
     private Date dateCreation;
+    // private LocalDateTime dateCreation;
 
     @LastModifiedDate // Pour préciser automatiquement à Hibernate que c'est une date de modification
     @Column(name = "lastModifiedDate")
@@ -53,10 +54,25 @@ public class AbstractEntity<U> implements Serializable
     void saveDate (){
         this.dateCreation =  new Date() ;
         this.dateModification =  new Date() ;
+        // dateCreation = LocalDateTime.now();
     }
 
     @PreUpdate
     public void preUpdate() {
         this.dateModification = new Date();
+    }
+
+    /**
+     * @return the dateCreation
+     */
+    public Date getDateCreation() {
+        return (dateCreation == null) ? null : new Date(dateCreation.getTime());
+    }
+
+    /**
+     * @return the dateModification
+     */
+    public Date getDateModification() {
+        return (dateModification == null) ? null : new Date(dateModification.getTime());
     }
 }

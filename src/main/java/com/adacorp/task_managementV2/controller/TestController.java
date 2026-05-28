@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class TestController {
 
+    /** @ RequestMapping(value = "/welcome", method = RequestMethod.GET) **/
     @GetMapping(value = "/welcome")
     public String getSbAdminIndex(Model model){
         model.addAttribute("bonjour","BONJOUR LE MONDE");

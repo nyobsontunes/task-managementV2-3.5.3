@@ -9,13 +9,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 // import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
@@ -55,6 +54,7 @@ public class UserController {
         this.passwordEncoder = passwordEncoder;
     }
 
+    /** @ RequestMapping(value = "/create-user-test", method = RequestMethod.GET) **/
     @GetMapping(value = "/create-user-test")
     public String addAdminUser(Model model){
         Optional<Role> role = roleService.findByCode("ADMIN");
@@ -91,6 +91,7 @@ public class UserController {
         return "redirect:/" ;
     }
 
+    /** @ RequestMapping(value = "/home-list-users", method = RequestMethod.GET) **/
     @GetMapping(value = "/home-list-users")
     public String listUsers(Model model, Principal p){
 
@@ -106,6 +107,7 @@ public class UserController {
         return PAGE_USER_LIST ;
     }
 
+    /** @ RequestMapping(value = "/home-add-user", method = RequestMethod.GET) **/
     @GetMapping(value = "/home-add-user")
     public String addUserGet(Model model, Principal p, HttpServletRequest request) throws ParseException {
 
@@ -148,6 +150,7 @@ public class UserController {
         return PAGE_USER_ADD ;
     }
 
+    /** @ RequestMapping(value = "/home-add-user", method = RequestMethod.POST) **/
     @PostMapping(value = "/home-add-user")
     public String addUserPost(@ModelAttribute(UTILISATEUR) Utilisateur utilisateur, Model model , RedirectAttributes redirectAttributes, Principal p, HttpServletRequest request){
 
@@ -226,6 +229,7 @@ public class UserController {
 
     }
 
+    /** @ RequestMapping(value = "/home-edit-user", method = RequestMethod.GET) **/
     @GetMapping(value = "/home-edit-user")
     public String updateUserGet(@RequestParam("id") Long id, Model model) throws ParseException {
 
@@ -263,6 +267,7 @@ public class UserController {
         return PAGE_USER_ADD ;
     }
 
+    /** @ RequestMapping(value = "/home-disable-OR-enable-user", method = RequestMethod.GET) **/
     @GetMapping(value = "/home-disable-OR-enable-user")
     public String deleteUser(@RequestParam("id") Long id, RedirectAttributes redirectAttributes ) {
         Optional<Utilisateur> user = this.utilisateurService.findOne(id);
@@ -300,5 +305,15 @@ public class UserController {
         model.addAttribute("LabelSave", "commun.label.save") ;
         model.addAttribute("LabelHaveAccount", "Have an account? Go to login") ;
         model.addAttribute("listRole", roleList) ;
+    }
+
+    /**
+     * Fonction pour : ignorer les champs Date vides dans le formulaires HTML
+     * true → autorise les valeurs null si le champ est vide.
+     * Le format "yyyy-MM-dd hh:mm:ss.SSS" doit correspondre à celui de ton <input type="date">.
+     * */
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS"), true));
     }
 }

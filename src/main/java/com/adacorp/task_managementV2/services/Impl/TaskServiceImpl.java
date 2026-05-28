@@ -4,6 +4,8 @@ import com.adacorp.task_managementV2.model.State;
 import com.adacorp.task_managementV2.model.Task;
 import com.adacorp.task_managementV2.repository.TaskRepository;
 import com.adacorp.task_managementV2.services.TaskService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,11 @@ import java.util.Optional;
 
 @Service
 public class TaskServiceImpl implements TaskService {
+
+    /**
+     * Logger
+     */
+    private static final Logger LOGGER = LoggerFactory.getLogger(TaskServiceImpl.class);
 
     private final TaskRepository taskRepository ;
 

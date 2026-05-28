@@ -4,11 +4,12 @@ import com.adacorp.task_managementV2.model.Task;
 import com.adacorp.task_managementV2.model.Utilisateur;
 import com.adacorp.task_managementV2.model.UtilisateurTask;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface UtilisateurTaskRepository extends JpaRepository<UtilisateurTask, Long> {
+public interface UtilisateurTaskRepository extends JpaRepository<UtilisateurTask, Long>, QuerydslPredicateExecutor<UtilisateurTask> {
 
 
     Optional<UtilisateurTask> findByTask_Id(Long id) ;

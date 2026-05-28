@@ -3,6 +3,8 @@ package com.adacorp.task_managementV2.services.Impl;
 import com.adacorp.task_managementV2.model.State;
 import com.adacorp.task_managementV2.repository.StateRepository;
 import com.adacorp.task_managementV2.services.StateService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,11 @@ import java.util.Optional;
 
 @Service
 public class StateServiceImpl implements StateService {
+
+    /**
+     * Logger
+     */
+    private static final Logger LOGGER = LoggerFactory.getLogger(StateServiceImpl.class);
 
     private final StateRepository stateRepository ;
 

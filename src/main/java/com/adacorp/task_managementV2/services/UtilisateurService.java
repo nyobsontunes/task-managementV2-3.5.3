@@ -2,6 +2,7 @@ package com.adacorp.task_managementV2.services;
 
 import com.adacorp.task_managementV2.model.Utilisateur;
 import org.springframework.data.repository.query.Param;
+import org.springframework.validation.BindingResult;
 
 import java.util.Date;
 import java.util.List;
@@ -55,4 +56,44 @@ public interface UtilisateurService {
      */
     int reActivateInactiveAccountsWithLimitDate(Date limitDate);
 
+    /**
+     * permet de verifier si on peut updater utilisateur dans la base
+     *
+     * @param utilisateur     : utilisateur a updater
+     * @param utilisateurBase : utilisateur existant en base
+     * @return true si on peut, false sinon
+     */
+    boolean peutEnregistrerUtilisateur(Utilisateur utilisateur, Utilisateur utilisateurBase,
+                                       final BindingResult bindingResult);
+
+
+
+    /**
+     * Active ou désactive un utilisateur
+     *
+     * @param id l'identifiant de l'utilsateur à activer ou désactiver
+     */
+    void activer(long id);
+
+    /**
+     * Force à "actif" tous les utilisateurs identifiés
+     *
+     * @param ids les identifiants des utilisateurs à activer
+     */
+    void activer(long[] ids);
+
+    /**
+     * Force à "inactif" tous les utilisateurs identifiés
+     *
+     * @param ids les identifiants des utilisateurs à désactiver
+     */
+    void desactiver(long[] ids);
+
+    /**
+     * Retrouve un contact par son id avec un fetch special pour la compagnie
+     *
+     * @param id du contact
+     * @return contact associé à l'id
+     */
+    Utilisateur findByIdFetch(final long id);
 }

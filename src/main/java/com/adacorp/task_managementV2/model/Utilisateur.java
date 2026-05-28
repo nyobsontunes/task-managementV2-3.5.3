@@ -2,11 +2,13 @@ package com.adacorp.task_managementV2.model;
 
 
 import com.adacorp.task_managementV2.auditConfig.AbstractEntity;
+import com.adacorp.task_managementV2.constantes.TypeUtilisateur;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.processing.Pattern;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -34,7 +36,17 @@ public class Utilisateur extends AbstractEntity implements Serializable {
     @Column(name = "telephone", nullable = false)
     private String telephone ;
 
-    @Column(name = "email", nullable = false)
+    /**
+     * Email de l'utilisateur avec la contrainte suivante : le mail doit
+     * respecter l'expression reguliere :
+     * ^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]{2,}[.][a-zA-Z]{2,4}$
+     */
+    /* @NotEmpty
+    @Pattern(regexp = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]{2,}[.][a-zA-Z]{2,4}$",
+            message = "format email invalide")
+    @Size(max = 350)
+    */
+    @Column(name = "email", unique = false, nullable = false, length = 350)
     private String email ;
 
     @Column(name = "password", nullable = false)
@@ -65,4 +77,10 @@ public class Utilisateur extends AbstractEntity implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateDerniereConnexion;
 
+    /**
+     * Type d'utilisateur
+     */
+    @Column(name = "type_utilisateur", nullable = true)
+    @Enumerated(EnumType.STRING)
+    private TypeUtilisateur typeUtilisateur;
 }

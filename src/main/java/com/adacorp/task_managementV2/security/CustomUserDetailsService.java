@@ -33,6 +33,15 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
+        /*
+         * FDE_77400 : VERIFICATION DU DOUBLONS DE EMAIL
+         * LORS DE LA CONNEXION & PRISE EN COMPTE DES EMAILS ACTIFS PENDANT AUTHENTICATION.
+         */
+        if (username == null) {
+            LOGGER.error("[SAGA] - L'adresse email suivante {}  est vide dans le controller... Veillez contacter l'administrateur", username);
+            throw new UsernameNotFoundException("[TaskManagement] - L'adresse email suivante "+username+" est vide dans le controller... Veillez contacter l'administrateur") ;
+        }
+
         // Utilisateur utilisateur2 = utilisateurRepository.findByEmail(username).orElse( null );
         // On affecte le Contenu de la Méthode à L'objet Utilisateur Crée Pour la Session (AppUser utilisateur).
         Utilisateur utilisateur =
@@ -47,7 +56,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         try {
             dateHeureConnexionDate = sdf.parse(dateHeureConnexionString) ;
         } catch (ParseException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("[TaskManagement] Exception : "+e.getMessage());
         }
 
         /*
@@ -71,16 +80,16 @@ public class CustomUserDetailsService implements UserDetailsService {
                 " Chargement de la méthode public UserDetails loadUserByUsername  Email = {} " ,username
         );
 
-        LOGGER.info( " utilisateur.fistName & utilisateur.lastName = {} {} ", utilisateur.getFirstName() ,utilisateur.getLastName());
-        LOGGER.info( " utilisateur.telephone = {} " ,utilisateur.getTelephone());
-        LOGGER.info( " utilisateur.email = {} " ,utilisateur.getEmail());
-        LOGGER.info( " utilisateur.password = {} ", utilisateur.getPassword());
-        LOGGER.info( " utilisateur.dateDerniereConnexionString = {} ", dateHeureConnexionString);
-        LOGGER.info( " utilisateur.dateDerniereConnexionDateEntity = {} ", utilisateur.getDateDerniereConnexion());
-        LOGGER.info( " utilisateur.dateDerniereConnexionDateObject = {} ", dateDerniereConnexion);
+        LOGGER.info( " [TaskManagement] utilisateur.fistName & utilisateur.lastName = {} {} ", utilisateur.getFirstName() ,utilisateur.getLastName());
+        LOGGER.info( " [TaskManagement] utilisateur.telephone = {} " ,utilisateur.getTelephone());
+        LOGGER.info( " [TaskManagement] utilisateur.email = {} " ,utilisateur.getEmail());
+        LOGGER.info( " [TaskManagement] utilisateur.password = {} ", utilisateur.getPassword());
+        LOGGER.info( " [TaskManagement] utilisateur.dateDerniereConnexionString = {} ", dateHeureConnexionString);
+        LOGGER.info( " [TaskManagement] utilisateur.dateDerniereConnexionDateEntity = {} ", utilisateur.getDateDerniereConnexion());
+        LOGGER.info( " [TaskManagement] utilisateur.dateDerniereConnexionDateObject = {} ", dateDerniereConnexion);
 
         // On injecte toutes informations de l'Utilisateur Authentifié dans la classe (CustomUserDetails).
-        LOGGER.info( " FIN ET ENVOIE DE L'OBJET Utilisateur à la Classe CustomUserDetails" );
+        LOGGER.info( " [TaskManagement] FIN ET ENVOIE DE L'OBJET Utilisateur à la Classe CustomUserDetails" );
 
         // (CustomerUserDetails implements UserDetails)
         return new CustomerUserDetails(utilisateur);

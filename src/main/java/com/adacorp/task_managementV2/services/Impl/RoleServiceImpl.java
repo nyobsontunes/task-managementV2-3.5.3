@@ -3,6 +3,8 @@ package com.adacorp.task_managementV2.services.Impl;
 import com.adacorp.task_managementV2.model.Role;
 import com.adacorp.task_managementV2.repository.RoleRepository;
 import com.adacorp.task_managementV2.services.RoleService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
@@ -12,6 +14,11 @@ import java.util.Optional;
 
 @Service
 public class RoleServiceImpl implements RoleService {
+
+    /**
+     * Logger
+     */
+    private static final Logger LOGGER = LoggerFactory.getLogger(RoleServiceImpl.class);
 
     // Dependency Injection By Variables
     @Autowired

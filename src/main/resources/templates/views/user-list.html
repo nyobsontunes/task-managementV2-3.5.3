@@ -77,7 +77,33 @@
                                         <td th:text="${user.email}">
                                         <td th:text="${user.isAccountNonLocked}"></td>
                                         <td th:text="${user.role?.code}"></td>
+                                        <!-- <td th:text="${element.objDemandeDTO.getDateLimiteReponse() != null ? #calendars.format(element.objDemandeDTO.getDateLimiteReponse(),'dd/MM/yyyy HH:mm') : ''}" >Date Limite Reponse</td>-->
                                         <!-- <td th:text="${#dates.format(user.dateCreation, 'dd-MM-yyyy')}"></td> -->
+                                        <!-- <td th:value="${#dates.format(objCategorie.dateCreation, 'yyyy-MM-dd hh:mm:ss.SSS')}"></td> -->
+                                        <!-- <td th:title="${#dates.format(ligne.dateCreation, 'dd/MM/yyyy HH:mm')}"></td> -->
+                                        <!-- <td th:value="${#dates.format(objCategorie.dateModification, 'yyyy-MM-dd hh:mm:ss.SSS')}"></td> -->
+                                        <!-- <td class="action" th:text="${#locale.toString() == 'en' ? #calendars.format(element.dateCreation,'EEEE MMMM dd yyyy hh:mm aa') : #calendars.format(element.dateCreation,'EEEE d MMMM yyyy HH:mm') }" >Date de création</td> -->
+                                        <!-- <span th:text="${#temporals.format(maDate, 'EEEE d MMMM yyyy HH:mm')}"></span> : Avec LocalDateTime (Java 8+)-->
+                                        <!--<span th:text="${#temporals.format(maDate, 'EEEE d MMMM yyyy HH:mm', T(java.util.Locale).FRENCH)}"></span>-->
+                                        <!-- th:text="${#temporals.format(objSousCategorieDTO.dateModification, 'EEEE d MMMM yyyy HH:mm')}" -->
+                                        <!-- th:value="${#dates.format(objCategorieDTO.dateCreation, 'yyyy-MM-dd hh:mm:ss.SSS')}" /  th:value="${#dates.format(objCategorieDTO.dateModification, 'yyyy-MM-dd hh:mm:ss.SSS')}" -->
+                                        <!--   th:value="${#dates.format(objSousCategorieDTO.dateCreation, 'yyyy-MM-dd hh:mm:ss.SSS')}" / th:value="${#dates.format(objSousCategorieDTO.dateModification, 'yyyy-MM-dd hh:mm:ss.SSS')}" -->
+                                        <!--  th:value="${#dates.format(objLigneSousCategorieDTO.dateCreation, 'yyyy-MM-dd hh:mm:ss.SSS')}" /  th:value="${#dates.format(objLigneSousCategorieDTO.dateModification, 'yyyy-MM-dd hh:mm:ss.SSS')}" -->
+                                        <!--
+                                            Option 1 — Spring Boot - Dans application.properties :
+                                                spring.web.locale=fr
+                                                spring.web.locale-resolver=fixed
+                                        -->
+                                        <!--
+
+                                        --Langue dans laquelle la page est affiché
+                                        <input type="hidden" th:value="${#locale}" id="langue" />
+                                        <span th:text="${#locale.language == 'fr' ? leg.objSousCategorie.libelleSousCategorieFr : leg.objSousCategorie.libelleSousCategorieEn}">
+                                        </span><span th:text="${#locale.language == 'fr'}
+                                                ? ${leg.objSousCategorie.libelleSousCategorieFr}
+                                                : ${leg.objSousCategorie.libelleSousCategorieEn}">
+                                        </span>
+                                        -->
                                         <td th:text="${user.dateCreation != null} ? ${#dates.format(user.dateCreation, 'dd/MM/yyyy')} : #{commun.label.table.vide}"></td>
                                         <td class="text-align-center">
                                             <div class="btn-group align-middle" role="group" aria-label="Basic example">

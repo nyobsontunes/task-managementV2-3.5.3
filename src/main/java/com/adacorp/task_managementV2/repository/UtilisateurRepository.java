@@ -4,6 +4,7 @@ import com.adacorp.task_managementV2.model.Utilisateur;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface UtilisateurRepository extends JpaRepository<Utilisateur, Long> {
+public interface UtilisateurRepository extends JpaRepository<Utilisateur, Long>, QuerydslPredicateExecutor<Utilisateur> {
 
     @Query(nativeQuery = true, value = "select * FROM utilisateur u WHERE u.email = :email ")
     Utilisateur findOneByEmail(@Param("email") String email);
@@ -106,4 +107,34 @@ public interface UtilisateurRepository extends JpaRepository<Utilisateur, Long> 
             "WHERE u.isAccountNonLocked = false " +
             "AND (u.dateDerniereConnexion IS NOT NULL AND u.dateDerniereConnexion > :limitDate)")
     int reActivateInactiveAccountsWithLimitDate(@Param("limitDate") Date limitDate);
+
+    /**
+     * Force à "actif" tous les utilisateurs identifiés
+     * @param ids les identifiants des utilisateurs à activer
+     */
+    @Modifying
+    @Query("UPDATE Utilisateur u SET u.isAccountNonLocked = true WHERE u.id IN (?1)")
+    void activer(long[] ids);
+
+    /**
+     * Force à "inactif" tous les utilisateurs identifiés
+     * @param ids les identifiants des utilisateurs à désactiver
+     */
+    @Modifying
+    @Query("UPDATE Utilisateur u SET u.isAccountNonLocked = false WHERE u.id IN (?1)")
+    public void desactiver(long[] ids);
+
+    /**
+     * Recuperation de l'objet Utilisateur
+     * */
+    @Query("SELECT u FROM Utilisateur u WHERE u.id IN (?1)")
+    public Utilisateur findByIdFetch(long id);
+
+
+    /**
+     * Récuperer les utilisateurs identifiées
+     * @param ids les identifiants des utilisateurs à récuperer
+     */
+    @Query("SELECT u FROM Utilisateur u WHERE u.id IN (?1)")
+    public Iterable<Utilisateur> findByIds(long[] ids);
 }
