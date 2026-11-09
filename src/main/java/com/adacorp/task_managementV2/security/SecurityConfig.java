@@ -1,5 +1,6 @@
 package com.adacorp.task_managementV2.security;
 
+import com.adacorp.task_managementV2.services.handleService.CustomBeforeAuthenticationFilterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -7,12 +8,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.security.web.util.matcher.RequestMatchers;
 
 
 @Configuration
@@ -21,11 +20,13 @@ public class SecurityConfig {
 
     private final CustomUserDetailsService customUserDetailsService;
     private final PasswordEncoder passwordEncoder;
+    private final CustomBeforeAuthenticationFilterService customBeforeAuthenticationFilterService;
 
     @Autowired
-    public SecurityConfig(CustomUserDetailsService customUserDetailsService,PasswordEncoder passwordEncoder) {
+    public SecurityConfig(CustomUserDetailsService customUserDetailsService,PasswordEncoder passwordEncoder, CustomBeforeAuthenticationFilterService customBeforeAuthenticationFilterService) {
         this.customUserDetailsService = customUserDetailsService;
         this.passwordEncoder = passwordEncoder;
+        this.customBeforeAuthenticationFilterService = customBeforeAuthenticationFilterService;
     }
 
     @Bean
@@ -43,6 +44,8 @@ public class SecurityConfig {
         AuthenticationManager authenticationManager = authenticationManagerBuilder.build();
 
         httpSecurity
+                .headers(httpSecurityHeadersConfigurer ->  httpSecurityHeadersConfigurer.frameOptions().sameOrigin())
+                .headers(httpSecurityHeadersConfigurer ->  httpSecurityHeadersConfigurer.addHeaderWriter(new XFrameOptionsHeaderWriter(XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
                 .authorizeHttpRequests(
                         auth -> auth
                         // Sans être Authentifié — on accorde les droits de lecture et d'utilisation à ces ressources
@@ -59,6 +62,7 @@ public class SecurityConfig {
                         // Le reste, s'authentifier
                         .anyRequest().authenticated()
                 )
+                .addFilterBefore(customBeforeAuthenticationFilterService, CustomBeforeAuthenticationFilterService.class)
                 //.formLogin(form -> form.disable())
                 //.formLogin(AbstractHttpConfigurer::disable)
                 .formLogin(

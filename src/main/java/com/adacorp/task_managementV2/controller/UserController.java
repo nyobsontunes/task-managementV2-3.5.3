@@ -8,7 +8,6 @@ import com.adacorp.task_managementV2.services.UtilisateurService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -23,6 +22,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+
+// import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Slf4j
 @Controller
@@ -102,7 +103,7 @@ public class UserController {
         model.addAttribute(SUCCESS,"Successful Redirection users page") ;
         model.addAttribute("Titre", "commun.label.usersManagement") ;
         model.addAttribute("userNameSession", p.getName()) ;
-        model.addAttribute("userSession", utilisateurService.findByEmail(p.getName()).get()) ;
+        model.addAttribute("userSession", utilisateurService.findByEmail(p.getName()).orElseThrow(() -> new EntityNotFoundException(MSG_NO_SUCH_USER_FOUND))) ;
         // ----------------------------------------------------------------------------
         return PAGE_USER_LIST ;
     }
@@ -282,7 +283,7 @@ public class UserController {
         // Interface Fonctionnelle : Lambda Expression
         user.ifPresent(utilisateur -> utilisateur.setAccountNonLocked(!utilisateur.isAccountNonLocked()));
 
-        utilisateurService.save(user.get()) ;
+        utilisateurService.save(user.orElseThrow(() -> new EntityNotFoundException(MSG_NO_SUCH_USER_FOUND))) ;
         // utilisateurService.delete(user.orElseThrow(() -> new RuntimeException(MSG_NO_SUCH_USER_FOUND)));
         return "redirect:/home-list-users" ;
     }
